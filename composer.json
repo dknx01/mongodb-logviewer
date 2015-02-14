@@ -1,0 +1,14 @@
+{
+    "name": "dknx01/mongodb-logviewer",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dknx01/micromvc"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.0",
+	"dknx01/micro-mvc": "*"
+    }
+}

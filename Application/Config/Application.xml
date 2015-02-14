@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+    <!--<database type="mysql">-->
+        <!--<active>false</active>-->
+        <!--<host>localhost</host>-->
+        <!--<user>test</user>-->
+        <!--<password>test123</password>-->
+        <!--<name>test</name>-->
+        <!--<params>-->
+            <!--<charset>UTF-8</charset>-->
+        <!--</params>-->
+    <!--</database>-->
+    <database type="mongoDb">
+        <active>true</active>
+        <!--<host>localhost</host>-->
+        <!--<user>test</user>-->
+        <!--<password>test123</password>-->
+        <name>test</name>
+    </database>
+    <!--<javascript-files rootDirectory="js">-->
+        <!--<file>foo/bar.js</file>-->
+        <!--<file>bar.js</file>-->
+    <!--</javascript-files>-->
+    <css-files rootDirectory="css">
+        <file>site.css</file>
+    </css-files>
+    <externals-sources>
+        <css>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css</css>
+        <css>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css</css>
+        <javascript>https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js</javascript>
+        <javascript>https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js</javascript>
+    </externals-sources>
+</application>

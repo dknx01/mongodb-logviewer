@@ -1,0 +1,7 @@
+{
+    "name": "dknx01/micro-mvc",
+    "version": "0.5",
+    "require": {
+        "php": ">=5.3.0"
+    }
+}

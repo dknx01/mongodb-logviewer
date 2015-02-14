@@ -1,0 +1,33 @@
+<div>
+    <table class="table">
+        <tr>
+            <td>Entries (all): <?php echo $this->allEntries;?></td>
+            <td class="label-success"><a href="/Index/FindBy/?key=apache_access">Access logs: <?php echo $this->accessEntriesNumber;?></a></td>
+            <td class="label-danger"><a href="/Index/FindBy/?key=apache_error">Error logs: <?php echo $this->errorEntriesNumber;?></a></td>
+            <td class="label-warning"><a href="/Index/FindBy/?key=syslog">SysLog: <?php echo $this->syslogNumber;?></a></td>
+            <td class="label-info"><a href="/Index/FindBy/?key=random_logs">Other logs: <?php echo $this->otherEntriesNumber;?></a></td>
+        </tr>
+    </table>
+</div>
+
+<h1>Latest Entries:</h1><br>
+<?php
+$i = 0;
+foreach ($this->latestEntries as $entry) {
+    $i++;
+?>
+    <div class="entry panel panel-default" id="entry<?php echo $i;?>">
+        <div class="entryHeader panel-heading">Entry: <?php echo $i;?></div>
+        <div class="entryBody panel-body">
+            <table class="table table-striped">
+            <?php foreach ($entry as $k => $v) {?>
+                <tr>
+                    <td><?php echo htmlentities($k);?></td>
+                    <td><?php echo htmlentities($v);?></td>
+                </tr>
+            <?php }?>
+            </table>
+        </div>
+    </div>
+<?php
+}

@@ -1,0 +1,12 @@
+<ul class="nav nav-tabs">
+    <li role="presentation" <?php echo $this->naviActive == 'home' ? 'class="active"' : '';?>><a href="/">Home</a></li>
+    <?php
+    foreach ($this->types as $type) {?>
+        <li role="presentation" <?php echo $this->naviActive == $type ? 'class="active"' : '';?>>
+            <a href="/Index/FindBy/?key=<?php echo $type;?>"><?php echo $type;?></a>
+        </li>
+    <?php
+    }
+    ?>
+</ul>
+

@@ -1,0 +1,20 @@
+.entry {
+    box-shadow: 10px 10px 10px -5px rgba(0,0,0,0.55);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.entryHeader{
+    font-weight: bold;
+    border-radius: 5px;
+    padding-left: 5px;
+}
+.entryBody {
+    background-color: #66c6d5;
+    padding-left: 5px;
+    border-radius: 5px;
+    padding-bottom: 5px;
+}
+.table {
+    max-width: 99%!important;
+    margin-bottom: 0px!important;
+}

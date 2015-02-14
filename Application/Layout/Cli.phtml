@@ -1,0 +1,10 @@
+<?php
+if (!is_null(\Mvc\System::getInstance()->viewHeader())) {
+    echo \Mvc\System::getInstance()->viewHeader() . PHP_EOL;
+}
+
+echo \Mvc\System::getInstance()->viewContent();
+
+if (!is_null(\Mvc\System::getInstance()->viewFooter())) {
+    echo \Mvc\System::getInstance()->viewFooter() . PHP_EOL;
+}

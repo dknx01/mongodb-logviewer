@@ -1,0 +1,25 @@
+<?php
+echo $this->getContent('Index/All.header');
+?>
+<h1>Entries of: <?php echo $this->type;?></h1>
+
+<?php
+$i = 0;
+foreach ($this->entries as $entry) {
+    $i++;
+    ?>
+    <div class="entry panel panel-default" id="entry<?php echo $i;?>">
+        <div class="entryHeader panel-heading">Entry: <?php echo $i;?></div>
+        <div class="entryBody panel-body">
+            <table class="table table-striped">
+                <?php foreach ($entry as $k => $v) {?>
+                    <tr>
+                        <td><?php echo htmlentities($k);?></td>
+                        <td><?php echo htmlentities($v);?></td>
+                    </tr>
+                <?php }?>
+            </table>
+        </div>
+    </div>
+<?php
+}
