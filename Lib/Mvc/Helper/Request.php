@@ -228,4 +228,26 @@ class Request
         return $this->getParamByName($name);
     }
 
+    /**
+     * @param array $params
+     * @param array $base
+     * @param bool $withCurrentParams
+     * @return string
+     */
+    public function buildURL(array $params, array $base , $withCurrentParams = true)
+    {
+        if (count($base) > 0) {
+            $url = '/' . implode('/', $base);
+        } else {
+            $url = '/' . $this->getControllerName() . '/' . $this->getAction();
+        }
+
+        if (!$withCurrentParams) {
+            $url .= '/?' . http_build_query($params);
+        } else {
+            $url .= '/?' . http_build_query(array_merge($this->params, $params));
+        }
+
+        return $url;
+    }
 }

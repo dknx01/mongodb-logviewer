@@ -1,6 +1,7 @@
 <?php
 echo $this->getContent('Index/All.header');
 ?>
+<div style="clear: both">
 <h1>Entries of: <?php echo $this->type;?></h1>
 
 <?php
@@ -23,3 +24,5 @@ foreach ($this->entries as $entry) {
     </div>
 <?php
 }
+?>
+</div>

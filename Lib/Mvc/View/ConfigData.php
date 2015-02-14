@@ -122,6 +122,6 @@ class ConfigData
         }
         return '<link rel="stylesheet"' .
         $attributes .
-        ' href"' . $this->cssRoot . '/' . $file . '" >';
+        ' href="/' . $this->cssRoot . '/' . $file . '" >';
     }
 }

@@ -18,3 +18,8 @@
     max-width: 99%!important;
     margin-bottom: 0px!important;
 }
+.filter {
+    margin-right: 10px;
+    max-width: 300px;
+    float: left;
+}

@@ -1,11 +1,27 @@
-<ul class="nav nav-pills">
-    <li role="presentation" class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-            Dropdown <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Disabled link</a></li>
-            <li><a href="#">Disabled link</a></li>
+<div>
+<?php
+foreach ($this->filters as $filterName => $filterValues) { ?>
+<div class="panel panel-default filter">
+    <div class="panel-heading">
+        <h3 class="panel-title"><?php echo $filterName; ?></h3>
+    </div>
+    <div class="panel-body">
+        <ul class="nav nav-pills" role="tablist">
+            <?php
+            foreach ($filterValues as $value) { ?>
+                <li role="presentation" <?php
+                if ($this->filtersActive && in_array($value, $this->filtersActive)) {echo 'class="active"';}
+                ?>>
+                    <a href="<?php echo $this->getRequest()->buildURL(array($filterName => $value), array('Index', 'Filter'));?>">
+                        <?php echo $value; ?>
+                    </a>
+                </li>
+            <?php
+            } ?>
         </ul>
-    </li>
-</ul>
+    </div>
+</div>
+<?php
+}
+?>
+</div>

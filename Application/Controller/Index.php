@@ -59,6 +59,19 @@ class Index extends \Mvc\Controller\ControllerAbstract
         $this->addToView('naviActive', $this->getRequest()->getParamByName('key'));
     }
 
+    public function filterAction()
+    {
+        $filters = $this->getRequest()->getParams();
+        $filters['type'] = $filters['key'];
+        unset($filters['key']);
+
+        $this->getFilters(array_keys($filters));
+        $this->addToView('entries', $this->apachelogs->getConnection()->find($filters));
+        $this->addToView('type', ucfirst($this->getRequest()->getParamByName('key')));
+        $this->addToView('naviActive', $this->getRequest()->getParamByName('key'));
+        $this->addToView('filtersActive', array_values($filters));
+    }
+
     protected function getFilters(array $columns)
     {
         foreach ($columns as $key => $column) {
@@ -68,13 +81,13 @@ class Index extends \Mvc\Controller\ControllerAbstract
         $this->addToView('filters', $columns);
     }
 
-    public function testAction()
-    {
-        $db = \Mvc\System::getInstance()->database();
-        $cursor = $db->selectCollection('test', 'cartoons')->find();
-        foreach ($cursor as $document) {
-            \Mvc\Helper\Debug::dump($document);
-            //echo $document["title"] . "\n";
-        }
-    }
+//    public function testAction()
+//    {
+//        $db = \Mvc\System::getInstance()->database();
+//        $cursor = $db->selectCollection('test', 'cartoons')->find();
+//        foreach ($cursor as $document) {
+//            \Mvc\Helper\Debug::dump($document);
+//            //echo $document["title"] . "\n";
+//        }
+//    }
 }
