@@ -2,10 +2,10 @@
 <?php
 foreach ($this->filters as $filterName => $filterValues) { ?>
 <div class="panel panel-default filter">
-    <div class="panel-heading">
-        <h3 class="panel-title"><?php echo $filterName; ?></h3>
+    <div class="panel-heading pointer" onclick="toggleFilter('<?php echo $filterName;?>')">
+        <h3 class="panel-title"><?php echo $filterName; ?><span class="caret"></span></h3>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" id ="filterPanel_<?php echo $filterName;?>">
         <ul class="nav nav-pills" role="tablist">
             <?php
             foreach ($filterValues as $value) { ?>
@@ -18,6 +18,7 @@ foreach ($this->filters as $filterName => $filterValues) { ?>
                 </li>
             <?php
             } ?>
+            <li role="presentation"><a href="<?php echo $this->getRequest()->buildURL(array($filterName => ''), array('Index', 'Filter'));?>">reset</a></li>
         </ul>
     </div>
 </div>

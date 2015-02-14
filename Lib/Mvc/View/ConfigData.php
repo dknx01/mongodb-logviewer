@@ -78,7 +78,7 @@ class ConfigData
      */
     private function generateJsHeader($file)
     {
-        return '<script src="' . $this->jsRoot . '/' . $file . '" type="text/javascript"></script>';
+        return '<script src="/' . $this->jsRoot . '/' . $file . '" type="text/javascript"></script>';
     }
 
     public function addCssFilesFromConfig()

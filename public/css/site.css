@@ -1,5 +1,5 @@
 .entry {
-    box-shadow: 10px 10px 10px -5px rgba(0,0,0,0.55);
+    box-shadow: 10px 10px 10px -5px rgba(0,0,0,0.55) !important;
     border-radius: 5px;
     margin-bottom: 10px;
 }
@@ -19,7 +19,9 @@
     margin-bottom: 0px!important;
 }
 .filter {
-    margin-right: 10px;
-    max-width: 300px;
     float: left;
+}
+
+.pointer {
+    cursor: pointer;
 }

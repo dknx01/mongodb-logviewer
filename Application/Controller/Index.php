@@ -51,7 +51,17 @@ class Index extends \Mvc\Controller\ControllerAbstract
 
     public function findByAction()
     {
-        $this->getFilters(array('verb', 'httpversion'));
+        $filterColumns = array(
+            'syslog' => array('syslog_program', 'syslog_severity'),
+            'apache_access' => array('verb', 'httpversion', 'response', 'agent', 'request', 'clientip'),
+            'apache_error' => array('clientip')
+        );
+        if (array_key_exists($this->getRequest()->getParamByName('key'), $filterColumns)) {
+            $filters = $filterColumns[$this->getRequest()->getParamByName('key')];
+        } else {
+            $filters = array();
+        }
+        $this->getFilters($filters);
         $this->addToView(
             'entries', $this->apachelogs->findAllByColumnValue('type', $this->getRequest()->getParamByName('key'))
         );
@@ -62,13 +72,22 @@ class Index extends \Mvc\Controller\ControllerAbstract
     public function filterAction()
     {
         $filters = $this->getRequest()->getParams();
-        $filters['type'] = $filters['key'];
+        if (!array_key_exists('type', $filters)) {
+            $filters['type'] = $filters['key'];
+        }
         unset($filters['key']);
-
+        foreach ($filters as $k => $v) {
+                $filters[$k] = urldecode($v);
+        }
         $this->getFilters(array_keys($filters));
+        foreach ($filters as $k => $v) {
+            if (empty($v)) {
+                unset($filters[$k]);
+            }
+        }
         $this->addToView('entries', $this->apachelogs->getConnection()->find($filters));
-        $this->addToView('type', ucfirst($this->getRequest()->getParamByName('key')));
-        $this->addToView('naviActive', $this->getRequest()->getParamByName('key'));
+        $this->addToView('type', ucfirst($filters['type']));
+        $this->addToView('naviActive', $filters['type']);
         $this->addToView('filtersActive', array_values($filters));
     }
 

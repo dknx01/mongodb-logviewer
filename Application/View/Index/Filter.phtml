@@ -1,15 +1,15 @@
 <?php echo $this->getContent('Index/All.header'); ?>
 <br>
 <div style="clear: both">
-    <h1>Entries of: <?php echo $this->type;?></h1>
+    <h1>Entries of: <?php echo $this->type;?> (<?php echo $this->entries->count();?>)</h1>
 
     <?php
     $i = 0;
     foreach ($this->entries as $entry) {
         $i++;
         ?>
-        <div class="entry panel panel-default" id="entry<?php echo $i;?>">
-            <div class="entryHeader panel-heading">Entry: <?php echo $i;?></div>
+        <div class="entry panel panel-default pointer" id="entry<?php echo $i;?>">
+            <div class="entryHeader panel-heading" onclick="toggleEntry('entry<?php echo $i;?>')">Entry: <?php echo $i;?><span></span></div>
             <div class="entryBody panel-body">
                 <table class="table table-striped">
                     <?php foreach ($entry as $k => $v) {?>
