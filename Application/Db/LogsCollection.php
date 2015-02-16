@@ -30,7 +30,7 @@ class LogsCollection extends  Collection
     /**
      * @return \MongoCursor
      */
-    public function getLastes()
+    public function getLatest()
     {
         return $this->getConnection()->find()->sort(array('_id' => -1))->limit(20);
     }

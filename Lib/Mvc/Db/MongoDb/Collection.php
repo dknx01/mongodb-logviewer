@@ -68,6 +68,6 @@ abstract class Collection {
      */
     public function findAllByColumnValue($column, $value)
     {
-        return $this->getConnection()->find(array($column => $value));
+        return $this->getConnection()->find(array($column => $value))->sort('_id', -1);
     }
 }

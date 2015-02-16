@@ -44,7 +44,7 @@ class Index extends \Mvc\Controller\ControllerAbstract
         $this->addToView('errorEntriesNumber', $this->apachelogs->getEntriesNumberByType('apache_error'));
         $this->addToView('syslogNumber', $this->apachelogs->getEntriesNumberByType('syslog'));
         $this->addToView('otherEntriesNumber', $this->apachelogs->getEntriesNumberByType('random_logs'));
-        $this->addToView('latestEntries', $this->apachelogs->getLastes());
+        $this->addToView('latestEntries', $this->apachelogs->getLatest());
         $this->addToView('allEntries', $this->apachelogs->getNumberOfEntries());
 
     }
@@ -85,7 +85,7 @@ class Index extends \Mvc\Controller\ControllerAbstract
                 unset($filters[$k]);
             }
         }
-        $this->addToView('entries', $this->apachelogs->getConnection()->find($filters));
+        $this->addToView('entries', $this->apachelogs->getConnection()->find($filters)->sort(array('_id' => -1)));
         $this->addToView('type', ucfirst($filters['type']));
         $this->addToView('naviActive', $filters['type']);
         $this->addToView('filtersActive', array_values($filters));
