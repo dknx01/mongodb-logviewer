@@ -62,6 +62,15 @@ abstract class Collection {
     }
 
     /**
+     * @param int $order
+     * @return MongoCursor
+     */
+    public function findAllWithOrder($order = -1)
+    {
+        return $this->getConnection()->find()->sort(array('_id' => $order));
+    }
+
+    /**
      * @param string $column
      * @param string $value
      * @return MongoCursor

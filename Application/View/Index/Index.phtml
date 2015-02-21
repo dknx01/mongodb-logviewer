@@ -2,15 +2,16 @@
     <table class="table">
         <tr>
             <td>Entries (all): <?php echo $this->allEntries;?></td>
-            <td class="label-success"><a href="/Index/FindBy/?key=apache_access">Access logs: <?php echo $this->accessEntriesNumber;?></a></td>
-            <td class="label-danger"><a href="/Index/FindBy/?key=apache_error">Error logs: <?php echo $this->errorEntriesNumber;?></a></td>
-            <td class="label-warning"><a href="/Index/FindBy/?key=syslog">SysLog: <?php echo $this->syslogNumber;?></a></td>
-            <td class="label-info"><a href="/Index/FindBy/?key=random_logs">Other logs: <?php echo $this->otherEntriesNumber;?></a></td>
+            <td class="label-success">Access logs: <?php echo $this->accessEntriesNumber;?></td>
+            <td class="label-danger">Error logs: <?php echo $this->errorEntriesNumber;?></td>
+            <td class="label-info">SysLog: <?php echo $this->syslogNumber;?></td>
+            <td class="label-warning">Pydio: <?php echo $this->pydioNumber;?></td>
+            <td class="label-default">Other logs: <?php echo $this->otherEntriesNumber;?></td>
         </tr>
     </table>
 </div>
 
-<h1>Latest Entries:</h1><br>
+<h1>Latest Entries (Apache):</h1><br>
 <?php
 $i = 0;
 foreach ($this->latestEntries as $entry) {

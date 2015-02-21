@@ -12,9 +12,9 @@ namespace Application\Db;
 
 use Mvc\Db\MongoDb\Collection;
 
-class LogsCollection extends  Collection
+class OtherLogsCollection extends  Collection
 {
-    protected $name = 'apachelogs';
+    protected $name = 'otherlogs';
 
     /**
      * @param string $type

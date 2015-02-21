@@ -15,7 +15,7 @@
         <!--<host>localhost</host>-->
         <!--<user>test</user>-->
         <!--<password>test123</password>-->
-        <name>test</name>
+        <name>logs</name>
     </database>
     <javascript-files rootDirectory="js">
         <file>site.js</file>

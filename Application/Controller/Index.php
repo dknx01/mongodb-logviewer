@@ -5,7 +5,10 @@
  * @package Application\Controller
  */
 namespace Application\Controller;
-use Application\Db\LogsCollection;
+use Application\Db\ApacheLogsCollection;
+use Application\Db\OtherLogsCollection;
+use Application\Db\PydioLogsCollection;
+use Application\Db\SysLogsCollection;
 use MongoClient;
 use MongoCollection;
 use \Mvc\Controller\ControllerAbstract;
@@ -18,9 +21,25 @@ use \Mvc\Helper\Debug;
 class Index extends \Mvc\Controller\ControllerAbstract
 {
     /**
-     * @var LogsCollection
+     * @var PydioLogsCollection
+     */
+    private $pydiologs;
+
+    /**
+     * @var ApacheLogsCollection
      */
     private $apachelogs;
+
+    /**
+     * @var SysLogsCollection
+     */
+    private $syslogs;
+
+    /**
+     * @var OtherLogsCollection
+     */
+    private $otherlogs;
+
     /**
      * @var MongoCollection
      */
@@ -28,9 +47,12 @@ class Index extends \Mvc\Controller\ControllerAbstract
 
     protected function up()
     {
-        $this->apachelogs = new LogsCollection($this->serviceLocator());
-        $this->types = $this->apachelogs->getAllUniqueFromColumn('type');
-        $this->addToView('types', $this->types['retval']);
+        $this->pydiologs = new PydioLogsCollection($this->serviceLocator());
+        $this->apachelogs = new ApacheLogsCollection($this->serviceLocator());
+        $this->syslogs = new SysLogsCollection($this->serviceLocator());
+        $this->otherlogs = new OtherLogsCollection($this->serviceLocator());
+
+        $this->addToView('types', array('apacheAccess', 'apacheError', 'Syslog', 'Pydio', 'others'));
 //        $this->setContentHeader('Index/All');
     }
 
@@ -42,28 +64,33 @@ class Index extends \Mvc\Controller\ControllerAbstract
         $this->addToView('naviActive', 'home');
         $this->addToView('accessEntriesNumber', $this->apachelogs->getEntriesNumberByType('apache_access'));
         $this->addToView('errorEntriesNumber', $this->apachelogs->getEntriesNumberByType('apache_error'));
-        $this->addToView('syslogNumber', $this->apachelogs->getEntriesNumberByType('syslog'));
-        $this->addToView('otherEntriesNumber', $this->apachelogs->getEntriesNumberByType('random_logs'));
+        $this->addToView('syslogNumber', $this->syslogs->getEntriesNumberByType('syslog'));
+        $this->addToView('pydioNumber', $this->pydiologs->getNumberOfEntries());
+        $this->addToView('otherEntriesNumber', $this->otherlogs->getEntriesNumberByType('random_logs'));
         $this->addToView('latestEntries', $this->apachelogs->getLatest());
-        $this->addToView('allEntries', $this->apachelogs->getNumberOfEntries());
+        $this->addToView('allEntries',
+            $this->viewData->accessEntriesNumber + $this->viewData->errorEntriesNumber + $this->viewData->syslogNumber
+            + $this->viewData->pydioNumber + $this->viewData->otherEntriesNumber
+            );
 
     }
 
     public function findByAction()
     {
         $filterColumns = array(
-            'syslog' => array('syslog_program', 'syslog_severity'),
-            'apache_access' => array('verb', 'httpversion', 'response', 'agent', 'request', 'clientip'),
-            'apache_error' => array('clientip')
+            'Syslog' => array('syslog_program', 'syslog_severity'),
+            'apacheAccess' => array('verb', 'httpversion', 'response', 'agent', 'request', 'clientip'),
+            'apacheError' => array('clientip'),
+            'Pydio' => array('ipaddress', 'timestamppydio')
         );
         if (array_key_exists($this->getRequest()->getParamByName('key'), $filterColumns)) {
             $filters = $filterColumns[$this->getRequest()->getParamByName('key')];
         } else {
             $filters = array();
         }
-        $this->getFilters($filters);
+        $this->getFilters($filters, $this->getRequest()->getParamByName('key'));
         $this->addToView(
-            'entries', $this->apachelogs->findAllByColumnValue('type', $this->getRequest()->getParamByName('key'))
+            'entries', $this->getEntries($this->getRequest()->getParamByName('key'))
         );
         $this->addToView('type', ucfirst($this->getRequest()->getParamByName('key')));
         $this->addToView('naviActive', $this->getRequest()->getParamByName('key'));
@@ -79,25 +106,58 @@ class Index extends \Mvc\Controller\ControllerAbstract
         foreach ($filters as $k => $v) {
                 $filters[$k] = urldecode($v);
         }
-        $this->getFilters(array_keys($filters));
+        $this->getFilters(array_keys($filters), $this->getRequest()->getParamByName('key'));
         foreach ($filters as $k => $v) {
             if (empty($v)) {
                 unset($filters[$k]);
             }
         }
-        $this->addToView('entries', $this->apachelogs->getConnection()->find($filters)->sort(array('_id' => -1)));
+        $this->addToView('entries', $this->getEntries($this->getRequest()->getParamByName('key')));
         $this->addToView('type', ucfirst($filters['type']));
         $this->addToView('naviActive', $filters['type']);
         $this->addToView('filtersActive', array_values($filters));
     }
 
-    protected function getFilters(array $columns)
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    protected function getEntries($key)
     {
+        $collection = $this->mapKeyToCollection($key);
+        return $this->{$collection}->findAllWithOrder();
+    }
+
+    /**
+     * @param array $columns
+     * @param string $key
+     */
+    protected function getFilters(array $columns, $key)
+    {
+        $collection = $this->mapKeyToCollection($key);
         foreach ($columns as $key => $column) {
             unset($columns[$key]);
-            $columns[$column] = $this->apachelogs->getConnection()->distinct($column);
+            $columns[$column] = $this->{$collection}->getConnection()->distinct($column);
         }
         $this->addToView('filters', $columns);
+    }
+
+    /**
+     * @param $key
+     * @return mixed
+     */
+    private function mapKeyToCollection($key)
+    {
+        $key2CollectionMap = array(
+            'apacheAccess' => 'apachelogs',
+            'apacheError' => 'apachelogs',
+            'Syslog' => 'syslogs',
+            'others' => 'otherlogs',
+            'Pydio' => 'pydiologs'
+        );
+
+        $collection = $key2CollectionMap[$key];
+        return $collection;
     }
 
 //    public function testAction()
