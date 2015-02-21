@@ -1,0 +1,2 @@
+PYDIOTIMESTAMP %{MONTHNUM}-%{MONTHDAY}-%{YEAR} %{TIME}
+PYDIOLOG %{PYDIOTIMESTAMP:timestamppydio}%{SPACE}%{IP:ipaddress}%{SPACE}%{LOGLEVEL:severity}%{SPACE}%{GREEDYDATA:pydio_message}
