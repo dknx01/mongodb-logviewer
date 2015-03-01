@@ -13,8 +13,8 @@
     <database type="mongoDb">
         <active>true</active>
         <!--<host>localhost</host>-->
-        <!--<user>test</user>-->
-        <!--<password>test123</password>-->
+        <user>logsUser</user>
+        <password>logsUser</password>
         <name>logs</name>
     </database>
     <javascript-files rootDirectory="js">
